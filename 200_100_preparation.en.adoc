@@ -1,0 +1,26 @@
+== Preparation
+=== Overview
+=== Overview
+=== Input formats
+=== Identifiers
+=== Basic parsing
+=== Controlled vocabularies
+=== Taxonomy
+=== Date/Time
+=== Location
+==== Interpretation
+==== Grids
+===== UTM
+==== Political boundaries (GADM.org)
+==== Habitats
+==== Protected areas
+==== Environmental layers
+==== Sensitive data
+==== Outlier detection
+=== Fitness for use
+=== Invasive species
+=== Traits
+=== Multimedia
+=== Sequences
+=== Outlier detection
+=== Data quality flags
