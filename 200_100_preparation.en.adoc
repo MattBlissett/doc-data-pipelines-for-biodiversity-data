@@ -1,17 +1,121 @@
 == Preparation
 === Overview
-=== Overview
 === Input formats
 === Identifiers
 === Basic parsing
+
+These operations are done on all terms:
+
+1. Leading or trailing whitespace is removed.
+2. Tabs and newlines are converted to spaces.
+3. The exact value `null`, `\N`, `''` or `""` is removed
+
+=== Occurrence status and count
+
+_Occurrence status_ records whether an occurrence is present, or whether this observation is for the absence of evidence of an organism.  _Invididual count_ records the number of individuals present at the time of the observation.
+
+Fields used for interpretation: `dwc:occurrenceStatus`, `dwc:individualCount`
+
+Fields set by interpretation: `dwc:occurrenceStatus`, `dwc:individualCount`
+
+Issues added by interpretation: 
+`OCCURRENCE_STATUS_UNPARSABLE`, 
+`INDIVIDUAL_COUNT_UNPARSABLE`,
+`OCCURRENCE_STATUS_INFERRED_FROM_INDIVIDUAL_COUNT`,
+`INDIVIDUAL_COUNT_CONFLICTS_WITH_OCCURRENCE_STATUS`
+
+GBIF API short names: `occurrenceStatus` and `individualCount`
+
+==== Interpretation rules
+
+`dwc:individualCount` is parsed as a positive number or zero.  `dwc:occurrenceStatus` is first parsed using [a vocabulary parser] to the GBIF vocabulary http://rs.gbif.org/sandbox/vocabulary/gbif/occurrence_status_2020-05-13.xml[Occurrence Status], which has two values `present` and `absent`.
+
+`dwc:occurrenceStatus` is then set according to this table:
+
+.Inferring `occurrenceStatus`
+[cols="4"]
+|===
+| individualCount | occurrenceStatus | inferred occurrenceStatus | issues
+
+| {null}          | {null}           | PRESENT                   |
+| {null}          | present          | PRESENT                   |
+| {null}          | absent           | ABSENT                    |
+| {null}          | _unparsable_     | PRESENT                   | OCCURRENCE_STATUS_UNPARSABLE
+| >0              | {null}           | PRESENT                   | OCCURRENCE_STATUS_INFERRED_FROM_INDIVIDUAL_COUNT
+| >0              | present          | PRESENT                   |
+| >0              | absent           | _ABSENT_                  | INDIVIDUAL_COUNT_CONFLICTS_WITH_OCCURRENCE_STATUS, OCCURRENCE_STATUS_INFERRED_FROM_INDIVIDUAL_COUNT
+| >0              | _unparsable_     | PRESENT                   | OCCURRENCE_STATUS_UNPARSABLE, OCCURRENCE_STATUS_INFERRED_FROM_INDIVIDUAL_COUNT
+| 0               | {null}           | ABSENT                    | OCCURRENCE_STATUS_INFERRED_FROM_INDIVIDUAL_COUNT
+| 0               | present          | _PRESENT_                 | INDIVIDUAL_COUNT_CONFLICTS_WITH_OCCURRENCE_STATUS, OCCURRENCE_STATUS_INFERRED_FROM_INDIVIDUAL_COUNT
+| 0               | absent           | ABSENT                    |
+| 0               | _unparsable_     | ABSENT                    | OCCURRENCE_STATUS_UNPARSABLE, OCCURRENCE_STATUS_INFERRED_FROM_INDIVIDUAL_COUNT
+| _unparsable_    | {null}           | PRESENT                   | INDIVIDUAL_COUNT_UNPARSABLE
+| _unparsable_    | present          | PRESENT                   | INDIVIDUAL_COUNT_UNPARSABLE
+| _unparsable_    | absent           | ABSENT                    | INDIVIDUAL_COUNT_UNPARSABLE
+| _unparsable_    | _unparsable_     | PRESENT                   | INDIVIDUAL_COUNT_UNPARSABLE, OCCURRENCE_STATUS_UNPARSABLE
+|===
+
 === Controlled vocabularies
 === Taxonomy
 === Date/Time
 === Location
-==== Interpretation
+
+--
+Darwin Core Terms: country, countryCode, decimalLatitude, decimalLongitude, geodeticDatum, coordinateUncertaintyInMeters, coordinatePrecision, verbatimCoordinates, verbatimLatitude, verbatimLongitude, verbatimCoordinateSystem, verbatimSRS
+--
+
+==== Geodetic datum and coordinates
+
+Fields used for interpretation: `dwc:geodeticDatum`, `...latitudes and longitudes...`
+
+Fields set by interpretation: same.
+
+Issues added by interpretation: TODO
+
+GBIF API short names: TODO
+
+Parse `dwc:geodeticDatum` using ...  If it fails or is unspecified, add issues ...
+
+Parse the coordinates by ..., converting them to WGS84.  Set the geodeticDatum to WGS84.
+
+==== Coordinate precision
+
+`dwc:coordinatePrecision` records the precision of supplied coordinates in decimal degrees.  The value should be in the range 0–1°, otherwise add an issue ...
+
+===== Coordinate Uncertainty
+
+The term `dwc:coordinateUncertaintyInMeters` should be a number strictly greater than zero, less than (half the Earth’s circumference).  It should also be greater than the precision calculated by https://docs.gbif-uat.org/georeferencing-best-practices/1.0/en/#uncertainty-related-to-coordinate-precision, and greater than the uncertainty introduced by an unknown datum https://docs.gbif-uat.org/georeferencing-best-practices/1.0/en/#uncertainty-from-unknown-datum
+
+Fields used for interpretation: `dwc:coordinateUncertaintyInMeters`, `dwc:geodeticDatum` (resulting issues), `dwc:coordinatePrecision` (and resulting issues)
+
+Fields set by interpretation: `dwc:coordinateUncertaintyInMeters`
+
+Issues added by interpretation: `TODO`
+
+GBIF API short name: `coordinateUncertaintyInMeters`
+
+===== Interpret the country
+
+Use the uncertainty from above.
+
 ==== Grids
 ===== UTM
-==== Political boundaries (GADM.org)
+==== Administrative boundaries (GADM.org)
+
+After basic interpretation of coordinates (and any appropriate corrections), occurrences are referenced to GADM's administrative areas.  GADM provides up to 6 levels of administrative boundary, with level 0 being a country, region or territory, and level 5 the smallest division.  We record levels zero to three.
+
+Fields used for interpretation: `dwc:decimalLatitude`, `dwc:decimalLongitude`
+
+Fields set by interpretation: `gadm:level0`, `gadm:level1`, `gadm:level2`, `gadm:level3`
+
+Issues added by interpretation: None.
+
+GBIF API short names: `gadmLevel0`, `gadmLevel1`, `gadmLevel2`, `gadmLevel3`
+
+===== Interpretation rules
+
+If the occurrence has a valid coordinate (any coordinate, including with issues resulting from coordinate interpretation) the terms `gadm:level0`, `gadm:level1`, `gadm:level2`, `gadm:level3` are set where the coordinate falls within a GADM administrative region.  GADM version 3.4 is used without simplification.
+
 ==== Habitats
 ==== Protected areas
 ==== Environmental layers

@@ -1,13 +1,15 @@
-= Data pipelines: for biodiversity data
-Tim Robertson <trobertson@gbif.org> & Matthew Blissett <mblissett@gbif.org>
+= Data pipelines for biodiversity data
+Tim Robertson; Matthew Blissett
+:toc: left
+:numbered:
 :revnumber: {git-metadata-branch}
 :revdate: {git-metadata-date} {git-metadata-time} {git-metadata-timezone}
 //:title-logo-image: img/web/photo.jpg
 :license: https://creativecommons.org/licenses/by/4.0/
+:null: ␀
 
 ifdef::backend-html5[]
-_languageLinks:pdf[This document is also available in,PDF format].
-//languageLinks:languages[and in other languages:,]._
+languageLinks:combined[]
 endif::backend-html5[]
 
 :sectnums!:
@@ -17,13 +19,15 @@ include::colophon.en.adoc[]
 :sectnums:
 
 include::100_100_about.en.adoc[]
+
 include::100_200_architecture.en.adoc[]
+
 include::100_300_roadmap.en.adoc[]
 
-include::100_100_about.en.adoc[]
-include::100_200_architecture.en.adoc[]
-include::100_300_roadmap.en.adoc[]
 include::200_100_preparation.en.adoc[]
+
 include::300_100_indexing.en.adoc[]
+
 include::400_100_formats.en.adoc[]
+
 include::500_100_community.en.adoc[]
