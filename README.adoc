@@ -7,6 +7,6 @@ https://builds.gbif.org/job/doc-data-pipelines-for-biodiversity-data/[image:http
 
 _This is information *about* this document's source code.  It is not part of the document._
 
-The document is available as HTML and PDF at https://www.gbif-uat.org/data-pipelines-for-biodiversity-data/[Data Pipelines for Biodiversity Data].
+The document is available as HTML and PDF at https://docs.gbif-uat.org/data-pipelines-for-biodiversity-data/[Data Pipelines for Biodiversity Data].
 
 The document is built using AsciiDoc, for guidance on how to make changes or suggestions see the https://labs.gbif.org/documents/documentation-guidelines/[GBIF Documentation Guidelines].
