@@ -1,7 +1,21 @@
 == Formats
+
 === Overview
+
 === Field delimited formats
+
+==== Simple delimited
+
+Simple delimited format, called `SIMPLE_CSV` within the GBIF API, is a <<tab-separated>> text file containing the most commonly used interpreted terms.
+
+...
+
 === Data packages (DwC-A)
+
+Darwin Core Archives ...
+
 === Geospatial formats
+
 === Essential biodiversity variables (EBVs)
+
 === Ad-hoc SQL
