@@ -10,7 +10,29 @@ These operations are done on all terms:
 2. Tabs and newlines are converted to spaces.
 3. The exact value `null`, `\N`, `''` or `""` is removed
 
-=== Occurrence status and count
+=== Record class
+
+=== Basis of Record
+
+Darwin Core definition: Records the specific nature of the data record.
+
+Values are aligned to the https://gbif.github.io/gbif-api/apidocs/org/gbif/api/vocabulary/BasisOfRecord.html[Basis of Record enumeration] using the https://github.com/gbif/parsers/blob/master/src/main/resources/dictionaries/parse/basisOfRecord.tsv[Basis of Record parser].  If the published value cannot be aligned to the enumeration, a BASIS_OF_RECORD_INVALID issues is applied.
+
+https://github.com/gbif/pipelines/blob/dev/sdks/core/src/main/java/org/gbif/pipelines/core/interpreters/core/BasicInterpreter.java[Interpretation code].
+
+=== Identifiers
+
+The Darwin Core terms InstitutionID, InstitutionCode and OwnerInstitutionCode are used to look up the institution in the GRSciColl.
+
+The Darwin Core terms CollectionID and CollectionCode are used to look up the collection in the GRSciColl.
+
+https://github.com/gbif/registry/tree/master/registry-service/src/main/java/org/gbif/registry/service/collections/lookup/matchers
+
+https://github.com/gbif/pipelines/blob/dev/sdks/core/src/main/java/org/gbif/pipelines/core/interpreters/core/GrscicollInterpreter.java
+
+The issues XYZ are added when XXX.
+
+=== Occurrence status and individual count
 
 _Occurrence status_ records whether an occurrence is present, or whether this observation is for the absence of evidence of an organism.  _Invididual count_ records the number of individuals present at the time of the observation.
 
@@ -18,8 +40,8 @@ Fields used for interpretation: `dwc:occurrenceStatus`, `dwc:individualCount`
 
 Fields set by interpretation: `dwc:occurrenceStatus`, `dwc:individualCount`
 
-Issues added by interpretation: 
-`OCCURRENCE_STATUS_UNPARSABLE`, 
+Issues added by interpretation:
+`OCCURRENCE_STATUS_UNPARSABLE`,
 `INDIVIDUAL_COUNT_UNPARSABLE`,
 `OCCURRENCE_STATUS_INFERRED_FROM_INDIVIDUAL_COUNT`,
 `INDIVIDUAL_COUNT_CONFLICTS_WITH_OCCURRENCE_STATUS`
@@ -43,10 +65,10 @@ GBIF API short names: `occurrenceStatus` and `individualCount`
 | {null}          | _unparsable_     | PRESENT                   | OCCURRENCE_STATUS_UNPARSABLE
 | >0              | {null}           | PRESENT                   | OCCURRENCE_STATUS_INFERRED_FROM_INDIVIDUAL_COUNT
 | >0              | present          | PRESENT                   |
-| >0              | absent           | _ABSENT_                  | INDIVIDUAL_COUNT_CONFLICTS_WITH_OCCURRENCE_STATUS, OCCURRENCE_STATUS_INFERRED_FROM_INDIVIDUAL_COUNT
+| >0              | absent           | _ABSENT_                  | INDIVIDUAL_COUNT_CONFLICTS_WITH_OCCURRENCE_STATUS
 | >0              | _unparsable_     | PRESENT                   | OCCURRENCE_STATUS_UNPARSABLE, OCCURRENCE_STATUS_INFERRED_FROM_INDIVIDUAL_COUNT
 | 0               | {null}           | ABSENT                    | OCCURRENCE_STATUS_INFERRED_FROM_INDIVIDUAL_COUNT
-| 0               | present          | _PRESENT_                 | INDIVIDUAL_COUNT_CONFLICTS_WITH_OCCURRENCE_STATUS, OCCURRENCE_STATUS_INFERRED_FROM_INDIVIDUAL_COUNT
+| 0               | present          | _PRESENT_                 | INDIVIDUAL_COUNT_CONFLICTS_WITH_OCCURRENCE_STATUS
 | 0               | absent           | ABSENT                    |
 | 0               | _unparsable_     | ABSENT                    | OCCURRENCE_STATUS_UNPARSABLE, OCCURRENCE_STATUS_INFERRED_FROM_INDIVIDUAL_COUNT
 | _unparsable_    | {null}           | PRESENT                   | INDIVIDUAL_COUNT_UNPARSABLE
@@ -55,9 +77,16 @@ GBIF API short names: `occurrenceStatus` and `individualCount`
 | _unparsable_    | _unparsable_     | PRESENT                   | INDIVIDUAL_COUNT_UNPARSABLE, OCCURRENCE_STATUS_UNPARSABLE
 |===
 
-=== Controlled vocabularies
-=== Taxonomy
-=== Date/Time
+=== Recorded by and catalogue number
+
+=== Event date, year, month and day
+
+=== Taxon
+
+K, P, C, O, F, G, S... Rank, Status.
+
+=== Identified by
+
 === Location
 
 --
@@ -116,6 +145,10 @@ GBIF API short names: `gadmLevel0`, `gadmLevel1`, `gadmLevel2`, `gadmLevel3`
 
 If the occurrence has a valid coordinate (any coordinate, including with issues resulting from coordinate interpretation) the terms `gadm:level0`, `gadm:level1`, `gadm:level2`, `gadm:level3` are set where the coordinate falls within a GADM administrative region.  GADM version 3.4 is used without simplification.
 
+=== Multimedia
+
+=== Licence
+
 ==== Habitats
 ==== Protected areas
 ==== Environmental layers
@@ -124,7 +157,6 @@ If the occurrence has a valid coordinate (any coordinate, including with issues 
 === Fitness for use
 === Invasive species
 === Traits
-=== Multimedia
 === Sequences
 === Outlier detection
 === Data quality flags
