@@ -1,0 +1,8 @@
+// A link to index.adoc is included automatically.
+* xref:100_200_architecture.adoc[]
+* xref:100_300_roadmap.adoc[]
+* xref:200_100_preparation.adoc[]
+* xref:300_100_indexing.adoc[]
+* xref:400_100_formats.adoc[]
+* xref:500_100_community.adoc[]
+//* xref:colophon.adoc[]

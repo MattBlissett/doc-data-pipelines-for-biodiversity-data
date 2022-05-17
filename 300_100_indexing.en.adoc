@@ -1,4 +1,0 @@
-== Indexing
-=== Overview
-=== ElasticSearch
-=== SOLR

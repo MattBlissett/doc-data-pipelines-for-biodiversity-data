@@ -1,8 +1,8 @@
-== Preparation
-=== Overview
-=== Input formats
-=== Identifiers
-=== Basic parsing
+= Preparation
+== Overview
+== Input formats
+== Identifiers
+== Basic parsing
 
 These operations are done on all terms:
 
@@ -10,9 +10,9 @@ These operations are done on all terms:
 2. Tabs and newlines are converted to spaces.
 3. The exact value `null`, `\N`, `''` or `""` is removed
 
-=== Record class
+== Record class
 
-=== Basis of Record
+== Basis of Record
 
 Darwin Core definition: Records the specific nature of the data record.
 
@@ -20,7 +20,7 @@ Values are aligned to the https://gbif.github.io/gbif-api/apidocs/org/gbif/api/v
 
 https://github.com/gbif/pipelines/blob/dev/sdks/core/src/main/java/org/gbif/pipelines/core/interpreters/core/BasicInterpreter.java[Interpretation code].
 
-=== Identifiers
+== Identifiers
 
 The Darwin Core terms InstitutionID, InstitutionCode and OwnerInstitutionCode are used to look up the institution in the GRSciColl.
 
@@ -32,7 +32,7 @@ https://github.com/gbif/pipelines/blob/dev/sdks/core/src/main/java/org/gbif/pipe
 
 The issues XYZ are added when XXX.
 
-=== Occurrence status and individual count
+== Occurrence status and individual count
 
 _Occurrence status_ records whether an occurrence is present, or whether this observation is for the absence of evidence of an organism.  _Invididual count_ records the number of individuals present at the time of the observation.
 
@@ -48,7 +48,7 @@ Issues added by interpretation:
 
 GBIF API short names: `occurrenceStatus` and `individualCount`
 
-==== Interpretation rules
+=== Interpretation rules
 
 `dwc:individualCount` is parsed as a positive number or zero.  `dwc:occurrenceStatus` is first parsed using [a vocabulary parser] to the GBIF vocabulary http://rs.gbif.org/sandbox/vocabulary/gbif/occurrence_status_2020-05-13.xml[Occurrence Status], which has two values `present` and `absent`.
 
@@ -77,23 +77,23 @@ GBIF API short names: `occurrenceStatus` and `individualCount`
 | _unparsable_    | _unparsable_     | PRESENT                   | INDIVIDUAL_COUNT_UNPARSABLE, OCCURRENCE_STATUS_UNPARSABLE
 |===
 
-=== Recorded by and catalogue number
+== Recorded by and catalogue number
 
-=== Event date, year, month and day
+== Event date, year, month and day
 
-=== Taxon
+== Taxon
 
 K, P, C, O, F, G, S... Rank, Status.
 
-=== Identified by
+== Identified by
 
-=== Location
+== Location
 
 --
 Darwin Core Terms: country, countryCode, decimalLatitude, decimalLongitude, geodeticDatum, coordinateUncertaintyInMeters, coordinatePrecision, verbatimCoordinates, verbatimLatitude, verbatimLongitude, verbatimCoordinateSystem, verbatimSRS
 --
 
-==== Geodetic datum and coordinates
+=== Geodetic datum and coordinates
 
 Fields used for interpretation: `dwc:geodeticDatum`, `...latitudes and longitudes...`
 
@@ -107,11 +107,11 @@ Parse `dwc:geodeticDatum` using ...  If it fails or is unspecified, add issues .
 
 Parse the coordinates by ..., converting them to WGS84.  Set the geodeticDatum to WGS84.
 
-==== Coordinate precision
+=== Coordinate precision
 
 `dwc:coordinatePrecision` records the precision of supplied coordinates in decimal degrees.  The value should be in the range 0–1°, otherwise add an issue ...
 
-===== Coordinate Uncertainty
+==== Coordinate Uncertainty
 
 The term `dwc:coordinateUncertaintyInMeters` should be a number strictly greater than zero, less than (half the Earth’s circumference).  It should also be greater than the precision calculated by https://docs.gbif-uat.org/georeferencing-best-practices/1.0/en/#uncertainty-related-to-coordinate-precision, and greater than the uncertainty introduced by an unknown datum https://docs.gbif-uat.org/georeferencing-best-practices/1.0/en/#uncertainty-from-unknown-datum
 
@@ -123,13 +123,13 @@ Issues added by interpretation: `TODO`
 
 GBIF API short name: `coordinateUncertaintyInMeters`
 
-===== Interpret the country
+==== Interpret the country
 
 Use the uncertainty from above.
 
-==== Grids
-===== UTM
-==== Administrative boundaries (GADM.org)
+=== Grids
+==== UTM
+=== Administrative boundaries (GADM.org)
 
 After basic interpretation of coordinates (and any appropriate corrections), occurrences are referenced to GADM's administrative areas.  GADM provides up to 6 levels of administrative boundary, with level 0 being a country, region or territory, and level 5 the smallest division.  We record levels zero to three.
 
@@ -141,22 +141,22 @@ Issues added by interpretation: None.
 
 GBIF API short names: `gadmLevel0`, `gadmLevel1`, `gadmLevel2`, `gadmLevel3`
 
-===== Interpretation rules
+==== Interpretation rules
 
 If the occurrence has a valid coordinate (any coordinate, including with issues resulting from coordinate interpretation) the terms `gadm:level0`, `gadm:level1`, `gadm:level2`, `gadm:level3` are set where the coordinate falls within a GADM administrative region.  GADM version 3.4 is used without simplification.
 
-=== Multimedia
+== Multimedia
 
-=== Licence
+== Licence
 
-==== Habitats
-==== Protected areas
-==== Environmental layers
-==== Sensitive data
-==== Outlier detection
-=== Fitness for use
-=== Invasive species
-=== Traits
-=== Sequences
+=== Habitats
+=== Protected areas
+=== Environmental layers
+=== Sensitive data
 === Outlier detection
-=== Data quality flags
+== Fitness for use
+== Invasive species
+== Traits
+== Sequences
+== Outlier detection
+== Data quality flags

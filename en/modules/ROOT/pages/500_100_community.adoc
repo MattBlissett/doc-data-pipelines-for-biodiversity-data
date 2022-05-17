@@ -1,6 +1,6 @@
-== Community
+= Community
 
-=== GBIF Pipelines Specification
+== GBIF Pipelines Specification
 
 The GBIF …
 

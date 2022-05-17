@@ -1,8 +1,8 @@
-== Roadmap
+= Roadmap
 
 WARNING: Data pipelines is a new project under active development.
 
-=== Features
+== Features
 
 //[options="header"]
 //|===
@@ -20,6 +20,6 @@ WARNING: Data pipelines is a new project under active development.
 //|Orci non pretium|yes|partial|-|-|-
 //|===
 
-=== Deployments
+== Deployments
 
-=== Governance
+== Governance
